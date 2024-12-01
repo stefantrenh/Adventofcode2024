@@ -2,7 +2,6 @@
 using Adventofcode2024.Infrastructure.Helpers;
 using FluentAssertions;
 using Moq;
-using Xunit.Sdk;
 
 namespace Adventofcode2024.Tests.UnitTests.Day1
 {

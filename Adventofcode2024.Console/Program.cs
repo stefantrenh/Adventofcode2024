@@ -3,8 +3,6 @@ using Adventofcode2024.Application.Services.DistanceCalulator;
 using Adventofcode2024.Infrastructure.FileReaders;
 using Adventofcode2024.Infrastructure.Helpers;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
