@@ -1,7 +1,6 @@
-﻿using Adventofcode2024.Application.Interfaces;
-using Adventofcode2024.Infrastructure.Helpers;
+﻿using Adventofcode2024.Infrastructure.Helpers;
+using Adventofcode2024.TestHelpers;
 using FluentAssertions;
-using Moq;
 
 namespace Adventofcode2024.Tests.UnitTests.Day1
 {
@@ -46,10 +45,12 @@ namespace Adventofcode2024.Tests.UnitTests.Day1
     public class TotalDistanceByRangeTest
     {
         protected string[] line;
+        protected readonly MockFileReaderHelper mockFileReaderHelper;
 
         public TotalDistanceByRangeTest()
         {
             line = new[] { "3   4", "4  3", "2  5", "1   3", "3   9", "3   3" };
+            mockFileReaderHelper = new MockFileReaderHelper(line);
         }
     }
 
@@ -58,22 +59,9 @@ namespace Adventofcode2024.Tests.UnitTests.Day1
         [Fact]
         public async Task Should_Be_Equivalent_To_11()
         {
+            var filereader = mockFileReaderHelper.CreateMockFileReaderHelper();
 
-            var mockFileReader = new Mock<IFileReader>();
-            var mockFilePathHelper = new Mock<IFilePathHelper>();
-
-            var mockFilePath = @"C:\path\to\mock\file.txt";
-            mockFilePathHelper.Setup(fp => fp.GetFullPathToFile(It.IsAny<string>()))
-                              .Returns(mockFilePath);
-
-
-            mockFileReader.Setup(fr => fr.ReadAllLinesAsync(mockFilePath))
-                          .ReturnsAsync(line);
-
-
-            var fileReaderHelper = new FileReaderHelper(mockFileReader.Object, mockFilePathHelper.Object);
-
-            var result = await ReturnCalculatedDistance(fileReaderHelper);
+            var result = await ReturnCalculatedDistance(filereader);
 
             result.Should().Be(11);
         }
