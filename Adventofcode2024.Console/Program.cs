@@ -41,7 +41,9 @@ namespace ConsoleApp
             /*Day 3*/
             var enCryptCorruptedFileService = serviceProvider.GetService<IEncryptCorruptedFileService>();
             var result = await enCryptCorruptedFileService.CalculateEncryptedFile();
+            var result2 = await enCryptCorruptedFileService.CalculateEncryptedFileByValidNumbers();
             Console.WriteLine(result);
+            Console.WriteLine(result2);
 
             Console.ReadLine();
         }

@@ -47,11 +47,15 @@ namespace Adventofcode2024.Tests.UnitTests.Day3
     public class CorruptedFileTest
     {
         protected string[] line;
+        protected string[] line2;
         protected MockFileReaderHelper mockFileReader;
+        protected MockFileReaderHelper mockFileReader2;
         public CorruptedFileTest()
         {
             line = new string[] { "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))" };
+            line2 = new string[] { "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))" };
             mockFileReader = new MockFileReaderHelper(line);
+            mockFileReader2 = new MockFileReaderHelper(line2);
         }
     }
 
@@ -60,28 +64,53 @@ namespace Adventofcode2024.Tests.UnitTests.Day3
         [Fact]
         public async void Should_Return_48()
         {
-            var filereader = mockFileReader.CreateMockFileReaderHelper();
+            var filereader = mockFileReader2.CreateMockFileReaderHelper();
+
+            var result = await MultiplyValidMulData(filereader);
+
+            result.Should().Be(48);
         }
 
         private async Task<int> MultiplyValidMulData(FileReaderHelper fileReaderHelper)
         {
-            Func<string, List<(int firstNumb, int secondNumb)>> valueMapper = line =>
+            Func<string, List<(int firstNumber, int secondNumber)>> valueMapper = line =>
             {
                 var partsValue = new List<(int, int)>();
-                var stringList = new List<string>();
 
-                var startWord = "do()";
-                var endWord = "don't()";
+                var regExParternSkipAndTake = @"don't\(\).*?do\(\)";
+                var regExPatternTagetNumbers = @"mul\((\d+),(\d+)\)";
 
-                string pattern = @"mul\((\d+),(\d+)\)";
-                Regex regex = new Regex(pattern);
+                var formattedStringResult = Regex.Replace(line, regExParternSkipAndTake, "");
+
+                Regex regex = new Regex(regExPatternTagetNumbers);
+                MatchCollection matches = regex.Matches(formattedStringResult);
+
+                foreach (Match match in matches)
+                {
+                    var firstNumb = int.Parse(match.Groups[1].Value);
+                    var secondNumb = int.Parse(match.Groups[2].Value);
+                    partsValue.Add((firstNumb, secondNumb));
+                }
 
 
                 return partsValue;
             };
 
 
-            return 0;
+            var ienumerableValues = await fileReaderHelper.MapFileToObjectAsync("temp", valueMapper);
+
+            var sum = 0;
+
+            foreach (var item in ienumerableValues)
+            {
+                foreach (var pairValue in item)
+                {
+                    var multiplyNumbers = pairValue.firstNumber * pairValue.secondNumber;
+                    sum += multiplyNumbers;
+                }
+            }
+
+            return sum;
         }
     }
 

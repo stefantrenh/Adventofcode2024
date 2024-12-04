@@ -20,5 +20,7 @@ namespace Adventofcode2024.Infrastructure.Helpers
 
             return lines.Select(mapFunction);
         }
+
+
     }
 }

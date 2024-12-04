@@ -46,6 +46,52 @@ namespace Adventofcode2024.Application.Services.EncryptCorruptedFileCalculator
             }
 
             return sum;
+
+        }
+
+        private async Task<string> CombineFileLinesIntoSingleStringAsync(string fileName)
+        {
+            var lines = await fileReaderHelper.MapFileToObjectAsync(fileName, line => line);
+            return string.Concat(lines);
+        }
+
+        public async Task<int> CalculateEncryptedFileByValidNumbers()
+        {
+            var combinedContent = await CombineFileLinesIntoSingleStringAsync("Day3.txt");
+
+            var regExPatternTarget = @"mul\(\d+,\d+\)|do\(\)|don't\(\)";
+
+            bool validMuls = true;
+            var sum = 0;
+
+            Regex regex = new Regex(regExPatternTarget);
+            MatchCollection matches = regex.Matches(combinedContent);
+
+            foreach (Match match in matches)
+            {
+                string value = match.Value;
+
+                if (value == "don't()")
+                {
+                    validMuls = false;
+                }
+                else if (value == "do()")
+                {
+                    validMuls = true;
+                }
+                else if (value.StartsWith("mul(") && validMuls)
+                {
+                    var numbers = Regex.Match(value, @"mul\((\d+),(\d+)\)");
+                    if (numbers.Success)
+                    {
+                        int firstNumb = int.Parse(numbers.Groups[1].Value);
+                        int secondNumb = int.Parse(numbers.Groups[2].Value);
+                        sum += firstNumb * secondNumb;
+                    }
+                }
+            }
+
+            return sum;
         }
     }
 }
