@@ -1,4 +1,5 @@
 ﻿using Adventofcode2024.Application.Interfaces;
+using Adventofcode2024.Application.Services.CountXmasWordsService;
 using Adventofcode2024.Application.Services.DistanceCalulator;
 using Adventofcode2024.Application.Services.EncryptCorruptedFileCalculator;
 using Adventofcode2024.Application.Services.SafetyReportService;
@@ -19,6 +20,7 @@ namespace ConsoleApp
                 .AddSingleton<IEncryptCorruptedFileService, EncryptCorruptedFileService>()
                 .AddSingleton<IDistanceCalculatorService, DistanceCalulatorService>()
                 .AddSingleton<ISafetyCalculatorService, SafetyCalculatorService>()
+                .AddSingleton<ICountXmasWordsService, CountXmasWordsService>()
                 .BuildServiceProvider();
 
 
@@ -39,11 +41,20 @@ namespace ConsoleApp
             //Console.WriteLine(result2);
 
             /*Day 3*/
-            var enCryptCorruptedFileService = serviceProvider.GetService<IEncryptCorruptedFileService>();
-            var result = await enCryptCorruptedFileService.CalculateEncryptedFile();
-            var result2 = await enCryptCorruptedFileService.CalculateEncryptedFileByValidNumbers();
+            //var enCryptCorruptedFileService = serviceProvider.GetService<IEncryptCorruptedFileService>();
+            //var result = await enCryptCorruptedFileService.CalculateEncryptedFile();
+            //var result2 = await enCryptCorruptedFileService.CalculateEncryptedFileByValidNumbers();
+            //Console.WriteLine(result);
+            //Console.WriteLine(result2);
+
+
+            /*Day 4*/
+            var countXmasWordsService = serviceProvider.GetService<ICountXmasWordsService>();
+            var result = await countXmasWordsService.CountTotalXmasWords();
+            var result2 = await countXmasWordsService.CountTotalMasWords();
             Console.WriteLine(result);
             Console.WriteLine(result2);
+
 
             Console.ReadLine();
         }
