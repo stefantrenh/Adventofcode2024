@@ -1,5 +1,4 @@
-﻿using Adventofcode2024.Application.Interfaces;
-using Adventofcode2024.Infrastructure.Helpers;
+﻿using Adventofcode2024.Infrastructure.Helpers;
 using Adventofcode2024.TestHelpers;
 using FluentAssertions;
 

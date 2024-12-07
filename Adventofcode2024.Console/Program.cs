@@ -1,4 +1,5 @@
 ﻿using Adventofcode2024.Application.Interfaces;
+using Adventofcode2024.Application.Services.CountPageNumberService;
 using Adventofcode2024.Application.Services.CountXmasWordsService;
 using Adventofcode2024.Application.Services.DistanceCalulator;
 using Adventofcode2024.Application.Services.EncryptCorruptedFileCalculator;
@@ -21,6 +22,7 @@ namespace ConsoleApp
                 .AddSingleton<IDistanceCalculatorService, DistanceCalulatorService>()
                 .AddSingleton<ISafetyCalculatorService, SafetyCalculatorService>()
                 .AddSingleton<ICountXmasWordsService, CountXmasWordsService>()
+                .AddSingleton<ICountPageNumberService, CountPageNumberService>()
                 .BuildServiceProvider();
 
 
@@ -49,11 +51,18 @@ namespace ConsoleApp
 
 
             /*Day 4*/
-            var countXmasWordsService = serviceProvider.GetService<ICountXmasWordsService>();
-            var result = await countXmasWordsService.CountTotalXmasWords();
-            var result2 = await countXmasWordsService.CountTotalMasWords();
+            //var countXmasWordsService = serviceProvider.GetService<ICountXmasWordsService>();
+            //var result = await countXmasWordsService.CountTotalXmasWords();
+            //var result2 = await countXmasWordsService.CountTotalMasWords();
+            //Console.WriteLine(result);
+            //Console.WriteLine(result2);
+
+            /*Day 5*/
+            var countPageNumberService = serviceProvider.GetService<ICountPageNumberService>();
+            var result = await countPageNumberService.CountMiddleNumberOfPagesAsync();
+
             Console.WriteLine(result);
-            Console.WriteLine(result2);
+
 
 
             Console.ReadLine();
